@@ -1,1 +1,1 @@
-[{"title":"我的第一篇博客文章","date":"2021-08-07T08:20:38.000Z","path":"2021/08/07/我的第一篇博客文章/","tags":[]},{"title":"Hello World","date":"2021-08-07T08:08:10.867Z","path":"2021/08/07/hello-world/","tags":[]}]
+[{"title":"我的第一篇博客文章","date":"2021-08-07T08:20:38.000Z","path":"2021/08/07/我的第一篇博客文章/","tags":[{"name":"blog","slug":"blog","permalink":"http://example.com/tags/blog/"}]},{"title":"Hello World","date":"2021-08-07T08:08:10.867Z","path":"2021/08/07/hello-world/","tags":[]}]
