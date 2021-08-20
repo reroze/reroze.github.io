@@ -4,11 +4,38 @@
   
   
   <entry>
+    <title>MBR-2021acl</title>
+    <link href="/2021/08/18/MBR-2021acl/"/>
+    <url>/2021/08/18/MBR-2021acl/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Understanding-the-Properties-of-Minimum-Bayes-Risk-Decoding-in-Neural-Machine-Translation"><a href="#Understanding-the-Properties-of-Minimum-Bayes-Risk-Decoding-in-Neural-Machine-Translation" class="headerlink" title="Understanding the Properties of Minimum Bayes Risk Decoding in Neural Machine Translation"></a><strong>Understanding the Properties of Minimum Bayes Risk Decoding in Neural Machine Translation</strong></h1><p>​    最近看了一篇acl2021的论文，文章详细分析了Eikema和Aziz在coling2020上提出的MBR decoding和NMT当前的一些问题。现在来仔细阅读一番。</p><p>​    文章首先指出，NMT现在存在着一些biases：例如模型产生的翻译往往比标准译文更短，高估词频高的词的概率，并且对copy noise和域偏移的鲁棒性很低。Eikema和Aziz将这些问题归结于beam search并提出了使用MBR(Minimum Bayes Risk)的方法来进行解码。</p><p>​    本文分析了MBR在之前一些biases上的表现，发现由于采用的utility函数的特征。MBR在长度和词频上仍然存在偏差，但是在copy noise和domain shift上仍然提升了鲁棒性。</p><p>​    本文的主要贡献为：</p><ul><li>如果MBR采用的utility function更偏向于短的翻译，那么MBR也继承了这个偏置。</li><li>MBR仍然存在词频的偏置，仍然会高估高频词汇和低估低频词汇的概率。</li><li>与beam search相比，MBR对训练集中存在的copy noise更加稳定。</li><li>MBR比beam search有更好的域鲁棒性，能够比beam search产生更少的hallucinated content（流利但意思与原文不相关的句子）</li></ul><p>NMT目前存在的一些问题：</p><p>1.长度偏置，模型输出的译文往往比参考译文更短。</p><p>2.词频偏置：高估高频词汇的概率，低估低频词汇的概率。</p><p>3.beam search curse:随着beam size的增加，模型的翻译结果反而下降。</p><p>4.对copy-noise的敏感性。</p><p>5.low domain robustness：在不同的域中的稳定性差。</p><p>6.inadequacy of the mode:最大后验概率得到的结果不是最合适的。</p><p>MBR Decoding的定义：</p><p>首先根据模型的输出概率采样，得到一个sample pools（采样是每一次根据模型输出的后验概率进行采样，直到得到终止符为止，重复N次，得到采样池）</p><p>然后从采样池中进行如下公式得到MBR得到的结果：</p><script type="math/tex; mode=display">y^*=\mathop{\arg\max_{\\s_i \in S}}{\frac{1}{n}\sum_{s_j=1}^nu(s_i. s_j)}</script><p>其中u为utility function,例如bleu，metor之类的，采样池中得到一个与其他采样整体比较相似的采样作为MBR的结果，用来表现模型的整体输出。</p><p>接下来是论文的实验和结论部分，beam size为5，除了beam search和MBR，论文还比较了简单抽样的效果，简单抽样使用100次来求每次sample的变化程度。</p><p>下图展示MBR和beam search在out-domain和in-domain的上的CHRF1 scores差值。</p><p><img src="/2021/08/18/MBR-2021acl/figure1.png" alt="figure1"></p><p>可以发现随着sample数目的增加，MBR的效果越来越趋近beam search，在有些情况下甚至超过，并且在out-of-domain的数据中，MBR比beam search的差值要比在in domain数据中的差值更高。因此MBR并不存在beam search curse这类问题。</p><p>文章研究了MBR上使用不同utility function时对模型效果的影响。</p><p>一共使用了如下这些utility function：</p><p><img src="/2021/08/18/MBR-2021acl/table1.png" alt="table1"></p><p>并且对于MBR Decoding而言，没有一个utility function对所有的metrics都是表现最好的，往往与评价指标相关的utility function在对应评价指标下表现的最好。</p><p>如下图所示：</p><p><img src="/2021/08/18/MBR-2021acl/figure2.png" alt="figure2"></p><p>并且，utility function的选择也会影响对应length bias的表现，如下所示：</p><p><img src="/2021/08/18/MBR-2021acl/table2.png" alt="figure2"></p><p>​    由表可见，总体表现最好的指标并不一定是最好的utility function，其中symmetric是作者怀疑是由于指标的单向性，因此将指标改为了：</p><script type="math/tex; mode=display">u_{sym}(s_i, s_j)=H(u(s_i,s_j),u(s_j,s_i))</script><p>采用双向的平滑策略，但是这个也并没有很好的解决length bias的问题。</p><p>​    通过这个实验，作者得出了<strong>MBR inherits length biases associated with its utility function.</strong></p><p>对于Token frequency bias，作者发现，虽然MBR相比beam search有所缓解，但是仍然存在对应的偏置：</p><p><img src="/2021/08/18/MBR-2021acl/figure3.png" alt="figure3"></p><p>横坐标为在Translation中出现的概率，纵坐标为在traning data中出现的概率。</p><p>​    通过和single sample的对比，可以发现sample最能提下模型本身的输出，但是sample出来的句子的metric是最差的。</p><p>在Domain robustness上，MBR得到hallucination的概率更小，作者认为可能是这种句子被MBR assigns a lower utility score。生成的hallucination的概率如下:</p><p><img src="/2021/08/18/MBR-2021acl/figure5.png" alt="figure5"></p><p>使用robustness benchmark of Muller et al(2020)的结果如下：</p><p><img src="/2021/08/18/MBR-2021acl/figure4.png" alt="figure4"></p><p>作者认为可能是MBR减少了hallucinations的产生，从而使得MBR decoding在unknown domain上表现的更好。</p><p>MBR decoding对copy noise更加稳定，在copy noise比重比较小的情况下，beam search和MBR都表现不错，但是当copy noise的比例达到了5~25%时，MBR表现得比beam search好很多（在Arabic-German上达到了超过10的bleu提升）</p><p>文章最后的总结，文章使用了当前常见的metric是作为utility function来研究MBR的特征，发现其仍然存在length bias和token frequency，并且length bias与其utility function紧密相连。但是MBR也解决了一些缺点，比如copy-noise和domain shift，MBR通过使用utility function打分的方式，来使得这些句子在sample pools中不那么容易的被选中，来实现其鲁棒性。研究中，MBR decoding并没有表现出比beam search更好的结果，但是由于MBR的鲁棒性，作者会在更多的效用函数上继续研究，包括一些可训练的效用函数。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>MT</category>
+      
+      <category>MBR</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>MT, MBR</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>我的第一篇博客文章</title>
     <link href="/2021/08/07/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/"/>
     <url>/2021/08/07/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/</url>
     
-    <content type="html"><![CDATA[<h2 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h2><p>内容</p><p>##第二章<br>内容</p><hr><p>##参考文献</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h2><p>内容</p><h2 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h2><p>内容</p><hr><h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2>]]></content>
     
     
     <categories>
