@@ -4,6 +4,60 @@
   
   
   <entry>
+    <title>hexo使用手册</title>
+    <link href="/2022/06/06/hexo%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/"/>
+    <url>/2022/06/06/hexo%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</url>
+    
+    <content type="html"><![CDATA[<h2 id="Hexo新建"><a href="#Hexo新建" class="headerlink" title="Hexo新建"></a>Hexo新建</h2><p>使用hexo new ‘filename’ 来新建 会在_post文件夹下新建一个文件和对应的图文件夹</p><h2 id="Hexo指令"><a href="#Hexo指令" class="headerlink" title="Hexo指令"></a>Hexo指令</h2><p>hexo s 本地预览</p><p>hexo d 部署</p><p>hexo g 生成新的改动</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Begin</category>
+      
+      <category>blog_learning</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>blog</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>lifelong-learing-review</title>
+    <link href="/2021/08/20/lifelong-learing-review/"/>
+    <url>/2021/08/20/lifelong-learing-review/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Continual-Lifelong-Learning-with-Neural-Networks-A-Review"><a href="#Continual-Lifelong-Learning-with-Neural-Networks-A-Review" class="headerlink" title="Continual Lifelong Learning with Neural Networks:*A Review"></a><strong>Continual Lifelong Learning with Neural Networks:*A Review</strong></h1><p>在真实世界的信息流下：Lifelong learning对计算机系统和自行交互系统很重要。然而不论是机器学习还是神经网络，lifelong learning都存在一个长期存在的问题，由于存在长期的可以从不稳定的数据分布中获得数据，通常会导致灾难性的遗忘或者冲突。这对state of art的神经网络模型不利，因为神经网络是从训练数据中以固定大小的batch抽取数据进行训练的，并没有考虑到数据是一个递增出现的情况。这篇文章详细的列出了在人工智能系统中和lifelong learning紧密相连的一些挑战，并且比较了现有的一些神经网络尝试减轻在不同的范围中的灾难性遗忘。尽管AI已经在特定的域中获得了显著的成就，大量的研究被要求在自动化的终端或者机器上发展稳定的lifelong学习系统。我们讨论了有效建立的和重要的研究，这些研究被生物系统的lifelong learning所驱动，例如结构性重构，记忆再现，课程学习和迁移学习，内在动机，多感官集成。</p><h2 id="introduction"><a href="#introduction" class="headerlink" title="introduction"></a>introduction</h2><p>​    The ability to continually learn over time by accommodating new knowledge while retaining previously learned experiences is referred to as continual or lifelong learning.</p><p>​    主流的计算模型认为lifelong learning非常容易灾难性遗忘和灾难性干扰。(McClelland et al. 1995, McCloskey &amp; Cohen 1989)在原有训练好的模型上进行新的模型训练，这个现象很容易导致模型的表现下降，在最糟的情况下，<code>old knowledge</code>会被<code>new knowledge</code><strong>完全覆写</strong>。</p><p>​    目前神经网络的训练方法依赖于在训练采样中的大batch，但是这样的方式需要假设所有的sample需要在training分割可用，因此在每一个batch中都需要对网络进行再训练，在每一个dataset中都需要对网络进行再次的训练，以此来适应数据集上数据的分布变化。（ Guo et al. (2016), LeCun et al. (2015)）</p><p>​    当在序列化任务上进行训练时，传统的神经网络模型在学习当前的任务时，之前的任务中表现显著下降。(Kemker et al. 2018, Maltoni &amp; Lomonaco 2018). 尽管$\textcolor{red}{模型再训练}$的方法从实用的角度上能解决特定数据集的一部分问题，但是这种方法是非常低效且无法在现实中学习新的数据。例如，在情景学习中，可能$\textcolor{red}{不会有明显的训练集测试集的区分}$，并需要实时的对对应的行为回复进行适应。(Cangelosi &amp; Schlesinger 2015, Tani 2016).</p><p>​    为了克服灾难性遗忘，学习系统必须一方面获取新的知识，并根据持续的输入进行之前学习到的知识的精炼，另一方面需要避免已经存在的知识对当前的输入造成明显的干扰。（==思考：因此或许可以使用两个网络？==）。<strong>stability-plasticity dilemma</strong>，是指一个系统需要是可塑的，为了整合新输入的信息，同时还要稳定，为了不产生灾难性的干扰现象。(Ditzler et al. 2015, Mermillod et al. 2013, Grossberg 1980, 2012).由于lifelong learning的挑战性和高影响性，大量的计算的方法开始被提出，并且被哺乳动物的大脑在学习时的生物学上的因素所启发。</p><hr><p>​    接下来会介绍，一些被研究的生理学上的研究以及他们对建立lifelong learning模型的启发，首先，我们关注神经结构上的可塑性的机制，在多种大脑中的可塑-稳定平衡的调节机制即（<strong>stability-plasticity dilemma</strong>）.可塑性是一个重要的方面，不论是对生物还是脑回路而言，对于一个稳定的持续的lifelong过程，两种可塑性是需要的</p><p><strong>（1）</strong> Hebbian plasticity用来构建不稳定的正反馈，</p><p><strong>（2）</strong> 用来补偿稳定的负反馈机制。</p><p>​    已经有实验观察到，有些特别的机制来处理新的任务在遇到干扰时，保护之前任务中学习到的知识，通过降低突触的学习率来实现。同时Hebbian还发现，一个自适应的可塑性稳定了网络的回路，从而形成了一个最佳的经验驱动的网络连接，集合和功能。</p><p>​    大脑需要执行两个互补的任务。==1.在经验上总结概括，2.和保持住暂时的记忆==。在2.4节我们会介绍互补学习系统<strong>complementary learning systems(CLS) (McClelland et al. 1995, Kumaran et al. 2016) </strong> 这个模型holds the means for有效的从之前的时间中提取出统计结构，并保持住暂时的记忆（也就是对一个特定的时间和地点的经历的总结收集）。</p><p>​    海马体和大脑皮层的互补作用使得人体获得一个相对稳定统一的知识系统，海马体具有短期的适应能力，并且具有新知识的$\textcolor{red}{快速学习能力}$，而所学习到的新知识又会被迁移和融合到大脑皮层中作为长期的知识储备。（==短期和长期的网络？ 在特定任务上主要使用短期的网络结合长期网络进行测试，每次训练后将获得的知识去除数据偏移后总结归纳给长期网络 （auto DL？）==） 而大脑皮层的$\textcolor{red}{学习率很低}$，并且主要负责总结和概括。然而，即使是对人脑而言，灾难性遗忘有时还是会发生。</p><p>​    在生物神经网络<strong>lifelong learning</strong>方面上的研究已经启发了许多ML和DL的方法，在第三节我们会介绍和比较用来解决或者缓解灾难性遗忘的方法。主要关注以下几种模型：</p><p><strong>(1)</strong> 调节固有的突触可塑性（==调整学习率？==），来维护保护统一的知识体系。（in Sec</p><p>3.2）</p><p><strong>(2)</strong> 分配额外的网络资源来学习新的信息。（Sec。3.3）</p><p><strong>(3)</strong> 使用互补学习系统来实现统一考虑的记忆已经重现经历。（Sec. 3.4）</p><p>​    这些系统大部分都是在$\textcolor{red}{有限的有注解的数据集上进行有监督的lifelong学习}$，并没有拓展到新的复杂的场景，例如对<strong>部分无标记的数据序列的处理</strong>(==单语机器翻译?==)。 无监督的lifelong learning一方面已经被<strong>self-organizing neural networks</strong> 提及<strong>(e.g., Parisi, Tani, Weber &amp; Wermter (2018, 2017), Richardson &amp; Thomas (2008))</strong> </p><p>​    尽管在设计带有结构正则化(<strong>structural regularization</strong>)或者动态结构更新(<strong>dynamic architectural update</strong>)的学习方法有了显著的提升，但是考虑到很少的注意力被放在怎样严格的==评估==这些算法在终身和递增的学习任务中的表现。因此，在Sec 3.5我们讨论了$\textcolor{red}{设计和使用一定量的指标来衡量大规模的数据集上的灾难性遗忘的程度的重要性}$。</p><hr><p>由于lifelong learning在自主学习的终端和机器人上的意义，其在受到越来越多的关注。    神经网络被特别的设计成了$\textcolor{red}{增量适应}$特别的形式通常是人工标注的$\textcolor{red}{在受限制的环境}$中进行的数据采样，彼此==顺序随机== （==神经网络不同数据集训练的顺序，或者同一个数据集的不同batch训练的顺序会对结果产生影响吗？==）且独立。而这个与人类和其他生物在其生命中的生理上的学习环境有$\textcolor{red}{显著的区别}$。在现实生活中的终端必须要能够处理不确定的知觉，能够有效不断的处理多种感官上的信息流，并且能够在之前学习到的基础上学习新的一系列任务并且不发生灾难性干扰。直觉上，这里存在一个巨大的鸿沟于上述提到的神经网络模型和目标对应的一些尝试使用不断的感知经验进行增量学习的更复杂的终身学习系统。</p><p>​    人类可以获得新的技能并且在不同的域和任务中迁移知识，然而人工智能系统还是仍然只能达到其初期的阶段，这个被称为神经网络中的<strong>transfer learning</strong>。<strong>(Weiss et al. 2016)</strong> 并且相较于主流的使用$\textcolor{red}{单一的感觉方面的信息}$训练神经网络的趋势而言，大脑更希望获得多种感官上的信息。（==多感官信息机器翻译？==） 并且这也在感觉不确定的情况下提供了一个有效的交互手段。多感官在大脑早期的发育和感知器的特化中的作用启发了许多研究的自治系统。在Sec4，我们重温了计算机上的被生物学习方面所启发的包括决定性的发展阶段和课程学习，在学习新的任务中，再次使用知识进行迁移学习，强化学习在自监督下自动的探索新的环境。和多感官的跨模型学习。</p><p>​    这篇综述在灾难性遗忘上在<code>connectionist models</code>上进行了补充，没有精细的比较最近的实验和针对在实验中已经观察的的机制，怎样训练和评估lifelong 方法定义清晰的指导方针。lifelong learning是一个跨学科的挑战性的问题。第5节，我们会总结出来展示出来的关键idea并提供一个正在进行和未来的研究方向。</p><p>==（生物学上的启发？）学习新知识到学习就知识？==</p><p>==（统计学上的启发？） 一个数据分布到另一个数据分布==</p><h2 id="Lifelong-Learning-and-Catastrophic-Forgetting-in-Neural-Networks"><a href="#Lifelong-Learning-and-Catastrophic-Forgetting-in-Neural-Networks" class="headerlink" title="Lifelong Learning and Catastrophic Forgetting in Neural Networks"></a>Lifelong Learning and Catastrophic Forgetting in Neural Networks</h2><h3 id="Lifelong-Machine-Learning"><a href="#Lifelong-Machine-Learning" class="headerlink" title="Lifelong Machine Learning"></a>Lifelong Machine Learning</h3><p>对于连接型的模型，三个主要的方法被提出</p><ol><li>allocating additional neural resources for new knowledge</li></ol><p>为新的知识分配新的额外的神经网络</p><ol><li>using non-overlapping representations if resources are fixed</li></ol><p>如果网络资源固定，则使用不同的部分</p><ol><li>interleaving the old knowledge as the new information is represented</li></ol><p>在新知识获取的时候交叉的加入使用老知识</p><ol><li>Retrain the whole network while regularizing to prevent catastrophic forgetting with previously learned tasks</li><li>Selectively train the network and expand it if necessary to represent new tasks</li><li>model complementary learning systems for memory consolidation by using memory replay to consolidate internal representations</li></ol><hr><h3 id="Regularization-Approaches"><a href="#Regularization-Approaches" class="headerlink" title="Regularization Approaches"></a>Regularization Approaches</h3><p>Regularization approaches alleviate catastrophic forgetting by imposing constraints on the update of the neural weights.</p><p>受突触在更新时，设置几个不同的可塑程度用来保护旧的知识的启发。</p><p>[带*为已整理到ppt中，不带为未整理]</p><p>*(Li&amp;Hoiem(2016))采用知识蒸馏的方法，使得现在的模型和之前的任务中学到的模型较为相似。即从大的，高规格化的模型中将知识转移到一个较小的模型中。</p><p>backward：高依赖于task之间的相关性，并且对于一个task的训练时间和其他task的数目线性相关。其需要一部分old task的数据。</p><p>Jung et al.(2018)提出了使用l2距离来在不同的task中正则化最后的隐藏激活层。</p><p>为保护之前学习到的输入输出对应关系通过使用老task的参数来计算额外的激活层.</p><p>这个计算资源要求高，因为每次计算新的数据抽样都要求了老的task的参数。</p><p>其他的做法有完全防止在训练老task上的参数的更新(Razavian et al. 2014)</p><p>和降低old task对应的参数的学习率在防止模型在使用新的数据进行训练时，其参数发生显著的变化。</p><p>Kirkpatrick et al. (2017)提出了elastic weight consolidation(EWC) model算法，在有监督和强化的场景下。这个方法包括了关于新老任务对应的不同参数的二次惩罚，这样减慢了和task相关的权重的更新。</p><p>backward：Kemker et al.(2018)的实验证明，EWC的方法对不同task中的排列组合训练表现较好，但是不适合于增量学习的场景。</p><hr><h3 id="Dynamic-Architectures"><a href="#Dynamic-Architectures" class="headerlink" title="Dynamic Architectures"></a>Dynamic Architectures</h3><p>…</p><p>Cortes et al.(2016)提出了一个适应性的算法，可以自适应的调整网络的结构和他的权重，通过平衡模型的复杂度和经验风险最小化。</p><p>Xiao et al.(2014) 提出了一个训练算法，网络增量学习在容量上以分级的形式增加不同的程度。网络根据他们的相似度分组并且自治的规划到几个不同的层次。模型从一个网络上继承参数下来以加速训练。这种方法只有最重要的几个layer能得到训练，并且这样的反向传播（分组的网络）计算效率不高。</p><p>Draelos et al.(2017)提出了</p><p>NDL讲了 DEN没讲</p><p>SOINN没讲</p><p>iCaRL可以讲一下</p><p>Parisi, Tani, Weber</p><p>&amp; Wermter (2017) showed that lifelong learning of human action sequences can be achieved in terms of prediction-driven neural dynamics with internal representations emerging in a hierarchy of recurrent self-organizing networks</p><p>GWR model</p><p>每个部分详细的说三篇即可</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>lifelong</category>
+      
+      <category>review</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>lifelong_learning</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>MBR-2021acl</title>
     <link href="/2021/08/18/MBR-2021acl/"/>
     <url>/2021/08/18/MBR-2021acl/</url>
