@@ -4,6 +4,60 @@
   
   
   <entry>
+    <title>typora常用符号</title>
+    <link href="/2022/06/11/typora%E5%B8%B8%E7%94%A8%E7%AC%A6%E5%8F%B7/"/>
+    <url>/2022/06/11/typora%E5%B8%B8%E7%94%A8%E7%AC%A6%E5%8F%B7/</url>
+    
+    <content type="html"><![CDATA[<p><img src="/2022/06/11/typora%E5%B8%B8%E7%94%A8%E7%AC%A6%E5%8F%B7/figure1.png" alt="figure1"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Write</category>
+      
+      <category>Typora</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Write, Typora</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>NMT-with-Monolingual-Translation-Memory</title>
+    <link href="/2022/06/11/NMT-with-Monolingual-Translation-Memory/"/>
+    <url>/2022/06/11/NMT-with-Monolingual-Translation-Memory/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    <categories>
+      
+      <category>NMT</category>
+      
+      <category>Memory</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>NMT, Memory</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>hexo使用手册</title>
     <link href="/2022/06/06/hexo%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/"/>
     <url>/2022/06/06/hexo%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/</url>
@@ -67,7 +121,7 @@
     
     <categories>
       
-      <category>MT</category>
+      <category>NMT</category>
       
       <category>MBR</category>
       
@@ -76,7 +130,7 @@
     
     <tags>
       
-      <tag>MT, MBR</tag>
+      <tag>NMT, MBR</tag>
       
     </tags>
     
