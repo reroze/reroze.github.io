@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      0 字
+      1.1k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      13
        分钟
     </span>
   
@@ -232,7 +232,31 @@
             <h1 style="display: none">NMT-with-Monolingual-Translation-Memory</h1>
             
             <div class="markdown-body">
-              
+              <h1 id="Neural-Machine-Translation-with-Monolingual-Translation-Memory"><a href="#Neural-Machine-Translation-with-Monolingual-Translation-Memory" class="headerlink" title="Neural Machine Translation with Monolingual Translation Memory"></a><strong>Neural Machine Translation with Monolingual Translation Memory</strong></h1><p>TM(Translate memory)可以增加NMT的翻译效果。</p>
+<p>TM的定义：</p>
+<p> 与之前使用双语语料和源语言端的相似度来查找记忆检索的方法不同，本方法提出了一个新的框架，使用单语记忆在跨语种的规则上表现出了可学习性的记忆检索。</p>
+<p>优点1：跨语言的记忆检索可以让大量的单语料信息成为TM(翻译记忆)</p>
+<p>优点2：记忆检索模型和NMT模型可以以最后的翻译目标一起被优化。</p>
+<p>本框架的实验效果有着很大的提升，甚至比一些使用双语语料的翻译以及的翻译模型效果还要好。由于本框架对于单语语料信息的使用，也证明 了本框架在一些低来源和不同领域的适用性的效果。</p>
+<p>参数神经网络伴随非参数记忆已经成为了一个有潜力的缓解更大模型规模发展的方向。Translation Memory（Guoping Huang, Lemao Liu, Xing Wang, Longyue Wang, Huayang Li, Zhaopeng Tu, Chengyan Huang, and Shuming Shi. 2021. Transmart: a practical in teractive machine translation system. <em>arXiv preprint</em> <em>arXiv</em>. ）</p>
+<p>本框架中的，一个有参数的神经机器翻译模型和单语料的翻译记忆和一个可学习的跨语种记忆检索器。</p>
+<p>将源语言与目标语言嵌入到同一片浅层向量空间中。dual-encoder framework</p>
+<p>(Jane Bromley, Isabelle Guyon, Yann LeCun, Eduard Sackinger, and Roopak Shah. 1993. Signature veri-fification using a” siamese” time delay neural network. In <em>Proceedings of the 6th International Conference</em> <em>on Neural Information Processing Systems</em>, pages 737–744.)</p>
+<p>记忆检索器，直接将源语言的输入和目标语言端的点相连接。这样，可以使得在目标语言端的单语数据也可以作为TM（翻译记忆来使用）</p>
+<p>整个翻译过程可以分为两个部分，1.检索 2.生成 </p>
+<p>对于一个输入x，从目标语言端的数据（除了对应目标语言的数据集外，还包含其他方面的数据集，只要是目标语言端的就可以）中选择M条目标语言语句，${z<em>i}</em>{i=1}^{M}$  并计算input与检索出来的目标语言端的语句计算相关分数 $f(x,z_i)$ 之后通过输入的句子x和挑选出的目标语言端的语句z以及计算的相关关系来生成最后的翻译语句。 $p(y|x, z_1, f(x, z_1), z_2, f(x, z_2), …, z_M, f(x, z_M))$  由于相关性分数$f(x, z_i)$ 也作为模型最后翻译的输入，因此，模型会同时训练memory retrieval模型和翻译模型。</p>
+<p>记忆检索模型，将包括翻译数据集目标语言语句在内的目标语言语料均作为翻译记忆，检索模型可能对于每一个输入需要计算所有的目标语言与其的相关分数。计算量较大。 </p>
+<p>作者最后采用了dual-encoder框架来解决此问题，此框架下，寻找最相关的句子可以被简化成Maximum Inner Product Search （MIPS）问题。</p>
+<p>计算$f(x, z)=E<em>{src}(x)^TE</em>{tgt}(z)$ 即将输入与翻译记忆编码后的嵌入向量进行点积即可进行分数的计算。</p>
+<p>$E<em>{src}与E</em>{tgt}$ 都是编码网络，将输入和目标语言文本映射到d维向量空间。作者使用了两个独立的Transformer结构来进行编码器的设置。</p>
+<p>$E<em>{src}(x) = normalize(W</em>{src}Trans_{src}(x))$</p>
+<p>$E<em>{tgt}(z) = normalize(W</em>{tgt}Trans_{tgt}(x))$ </p>
+<p>本框架使用自然回归解码的方式进行，框架为了融入记忆信息，增加了memory-encoder和cross-attn with memory encoder output。</p>
+<p>$\alpha<em>{ij} = \frac{exp(h_t^TW_mZ</em>{i,j})}{\sum\limits<em>{i=1}^M\sum\limits</em>{k=1}^{L<em>i}exp(h_t^TW_mz</em>{i,k})}$   </p>
+<p>先正常计算self-attn和src-attn，然后进行retriev从目标语句空间中检索出M个目标语句，并将检索分数作为计算attn的bias来计算原始decoder输出与memory的cross-mem-attn 。最后使用最终的值生成模型的预测解，并以gate的概率使用生成的解或者mem中对应概率的单词。</p>
+<p>检索模型的预训练任务1.随机抽取一部分源语言，目标语言对，然后使用检索模型挑选为其中源语言挑选正确的目标语言语句。</p>
+<p>检索模型的预训练任务2，是通过使用源语言的表征来预测目标语言的单词，通过目标语言的表征来预测源语言的单词</p>
+
             </div>
             <hr>
             <div>
