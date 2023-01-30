@@ -18,7 +18,7 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-  <title>typora常用符号 - Hexo</title>
+  <title>allennlp tokenizer - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
 
@@ -167,7 +167,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="typora常用符号">
+            <span class="h2" id="subtitle" title="allennlp tokenizer">
               
             </span>
 
@@ -177,8 +177,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-06-11 21:24" pubdate>
-        2022年6月11日 晚上
+      <time datetime="2023-01-22 16:09" pubdate>
+        2023年1月22日 下午
       </time>
     </span>
   
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      11 字
+      155 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      2
        分钟
     </span>
   
@@ -229,20 +229,13 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">typora常用符号</h1>
+            <h1 style="display: none">allennlp tokenizer</h1>
             
             <div class="markdown-body">
-              <p><img src="/2022/06/11/typora%E5%B8%B8%E7%94%A8%E7%AC%A6%E5%8F%B7/figure1.png" srcset="/img/loading.gif" lazyload alt></p>
-<p><img src="/2022/06/11/typora%E5%B8%B8%E7%94%A8%E7%AC%A6%E5%8F%B7/2.png" srcset="/img/loading.gif" lazyload alt></p>
-<p><img src="/2022/06/11/typora%E5%B8%B8%E7%94%A8%E7%AC%A6%E5%8F%B7/3.png" srcset="/img/loading.gif" lazyload alt></p>
-<p><img src="/2022/06/11/typora%E5%B8%B8%E7%94%A8%E7%AC%A6%E5%8F%B7/4.png" srcset="/img/loading.gif" lazyload alt="4"></p>
-<p><img src="/2022/06/11/typora%E5%B8%B8%E7%94%A8%E7%AC%A6%E5%8F%B7/5.png" srcset="/img/loading.gif" lazyload alt="5"></p>
-<p><img src="/2022/06/11/typora%E5%B8%B8%E7%94%A8%E7%AC%A6%E5%8F%B7/6.png" srcset="/img/loading.gif" lazyload alt="6"></p>
-<p><img src="/2022/06/11/typora%E5%B8%B8%E7%94%A8%E7%AC%A6%E5%8F%B7/7.png" srcset="/img/loading.gif" lazyload alt="7"></p>
-<p><img src="/2022/06/11/typora%E5%B8%B8%E7%94%A8%E7%AC%A6%E5%8F%B7/8.png" srcset="/img/loading.gif" lazyload alt="8"></p>
-<p><img src="/2022/06/11/typora%E5%B8%B8%E7%94%A8%E7%AC%A6%E5%8F%B7/9.png" srcset="/img/loading.gif" lazyload alt="9"></p>
-<p><img src="/2022/06/11/typora%E5%B8%B8%E7%94%A8%E7%AC%A6%E5%8F%B7/10.png" srcset="/img/loading.gif" lazyload alt="10"></p>
-<p>转载于<a target="_blank" rel="noopener" href="https://blog.csdn.net/SIMBA1949/article/details/79001226">https://blog.csdn.net/SIMBA1949/article/details/79001226</a></p>
+              <h1 id="Allennlp-0-9-0中的word-tokenindex"><a href="#Allennlp-0-9-0中的word-tokenindex" class="headerlink" title="Allennlp 0.9.0中的word_tokenindex"></a>Allennlp 0.9.0中的word_tokenindex</h1><p>这里以使用roberta为例</p>
+<p>roberta的word_indexer</p>
+<h2 id="1-init-py"><a href="#1-init-py" class="headerlink" title="1._init_.py"></a>1._<em>init_</em>.py</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">@TokenIndexer.register(<span class="hljs-params"><span class="hljs-string">&quot;roberta&quot;</span></span>)</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RobertaTokenIndexer</span>(<span class="hljs-params">TokenIndexer[<span class="hljs-built_in">int</span>]</span>):</span><br>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self,</span></span><br><span class="hljs-params"><span class="hljs-function">                 model_name: <span class="hljs-built_in">str</span> = <span class="hljs-string">&#x27;roberta-base&#x27;</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">                 namespace: <span class="hljs-built_in">str</span> = <span class="hljs-string">&#x27;bpe&#x27;</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">                 legacy: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">                 start_tokens: <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>] = <span class="hljs-literal">None</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">                 end_tokens: <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>] = <span class="hljs-literal">None</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">                 token_min_padding_length: <span class="hljs-built_in">int</span> = <span class="hljs-number">0</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">                 padding_on_right: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">                 padding_value: <span class="hljs-built_in">int</span> = <span class="hljs-number">1</span>,</span></span><br><span class="hljs-params"><span class="hljs-function">                 max_len: <span class="hljs-built_in">int</span> = <span class="hljs-number">512</span></span>) -&gt; <span class="hljs-literal">None</span>:</span><br>        <span class="hljs-built_in">super</span>().__init__(token_min_padding_length)<br>        <span class="hljs-comment">#roberta = torch.hub.load(&#x27;pytorch/fairseq:2f7e3f3323&#x27;, &#x27;bart.large.xsum&#x27;)</span><br>        roberta = torch.hub.load(<span class="hljs-string">&#x27;pytorch/fairseq:2f7e3f3323&#x27;</span>, <span class="hljs-string">&#x27;roberta.base&#x27;</span>)<br>        self.source_dictionary = roberta.task.source_dictionary<br>        <span class="hljs-comment">#调用的是fairseq的包</span><br>        self.bpe = roberta.bpe.bpe<br>        self.bpe_legacy = roberta.bpe<br>        self._added_to_vocabulary = <span class="hljs-literal">False</span><br>        self._namespace = namespace<br>        self._padding_on_right = padding_on_right<br>        self._padding_value = padding_value<br>        self._max_len = max_len<br>        self.legacy = legacy<br></code></pre></td></tr></table></figure>
+<p>使用roberta.base作为bpe的词典，roberta.base和robert.large的词典是一样的</p>
 
             </div>
             <hr>
@@ -252,9 +245,9 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/Write/">Write</a>
+                      <a class="hover-with-bg" href="/categories/Allennlp/">Allennlp</a>
                     
-                      <a class="hover-with-bg" href="/categories/Write/Typora/">Typora</a>
+                      <a class="hover-with-bg" href="/categories/Allennlp/tokenindexer/">tokenindexer</a>
                     
                   </div>
                 
@@ -262,7 +255,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/Write-Typora/">Write, Typora</a>
+                      <a class="hover-with-bg" href="/tags/blog/">blog</a>
                     
                   </div>
                 
@@ -279,18 +272,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/01/22/allennlp/tokenizer/tokenizer/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">allennlp tokenizer</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/06/11/NMT-with-Monolingual-Translation-Memory/">
-                        <span class="hidden-mobile">NMT-with-Monolingual-Translation-Memory</span>
+                      <a href="/2023/01/22/allennlp/TextFiled/TextField/">
+                        <span class="hidden-mobile">allennlp tokenizer</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
